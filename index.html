@@ -19,10 +19,6 @@ nav {
   background:#111827;
 }
 
-nav h2 {
-  margin:0;
-}
-
 .hero {
   text-align:center;
   padding:60px 20px;
@@ -50,9 +46,8 @@ button {
 }
 
 .section {
-  padding:50px 20px;
+  padding:60px 20px;
   text-align:center;
-  background:#1e293b;
 }
 
 .card {
@@ -62,6 +57,21 @@ button {
   border-radius:12px;
   margin:20px auto;
   max-width:600px;
+}
+
+.pricing {
+  background:#1e293b;
+  padding:40px 20px;
+  text-align:center;
+}
+
+.priceBox {
+  background:white;
+  color:black;
+  padding:20px;
+  border-radius:12px;
+  margin:20px auto;
+  max-width:300px;
 }
 
 .footer {
@@ -85,27 +95,61 @@ input {
 
 <nav>
   <h2>VERITAS AI</h2>
-  <div>Enterprise Verification</div>
+  <div>Enterprise Verification Infrastructure</div>
 </nav>
 
 <div class="hero">
-  <h1>Human Activity Verification Infrastructure</h1>
+  <h1>Secure Human Verification for Modern Platforms</h1>
   <p>
-    VERITAS AI provides multi-step human verification for 
-    freelance platforms, hiring companies, and online businesses.
+    Protect freelance platforms, hiring systems, and online businesses 
+    from bots and fake accounts with intelligent multi-step verification.
   </p>
-  <button onclick="startSession()">Start Secure Verification</button>
+  <button onclick="startSession()">Run Live Demo</button>
 </div>
 
 <div class="section">
-  <h2>Why Companies Use VERITAS AI</h2>
-  <p>• Prevent bot registrations</p>
-  <p>• Reduce fake freelancers</p>
-  <p>• Secure remote hiring</p>
-  <p>• Generate verification tokens</p>
+  <h2>How It Works</h2>
+  <p>• Multi-round human response testing</p>
+  <p>• Behavioral timing analysis</p>
+  <p>• AI-generated verification token</p>
+  <p>• Enterprise-ready infrastructure</p>
 </div>
 
-<div class="section" style="background:#0f172a;">
+<div class="pricing">
+  <h2>Pricing</h2>
+
+  <div class="priceBox">
+    <h3>Starter</h3>
+    <p>Up to 1,000 verifications/month</p>
+    <h2>$19/month</h2>
+  </div>
+
+  <div class="priceBox">
+    <h3>Professional</h3>
+    <p>Up to 10,000 verifications/month</p>
+    <h2>$79/month</h2>
+  </div>
+
+  <div class="priceBox">
+    <h3>Enterprise</h3>
+    <p>Unlimited verifications + API Access</p>
+    <h2>Custom Pricing</h2>
+  </div>
+
+</div>
+
+<div class="section">
+  <h2>For Companies</h2>
+  <p>
+    Integrate VERITAS AI into your platform to verify freelancers, 
+    job applicants, and online users instantly.
+  </p>
+  <p>
+    Contact: veritas@yourdomain.com
+  </p>
+</div>
+
+<div class="section" style="background:#1e293b;">
   <div class="card">
     <div id="testArea"></div>
     <div id="resultArea"></div>
@@ -151,7 +195,7 @@ function nextRound() {
   }
 
   round++;
-  let type = Math.floor(Math.random() * 3);
+  let type = Math.floor(Math.random() * 2);
 
   if (type === 0) {
     let n1 = Math.floor(Math.random() * 10) + 1;
