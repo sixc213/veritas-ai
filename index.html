@@ -4,24 +4,40 @@
 <title>VERITAS AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+
 body {
   margin:0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  background:#0f172a;
   color:white;
+}
+
+nav {
+  display:flex;
+  justify-content:space-between;
+  padding:20px;
+  background:#111827;
+}
+
+nav h2 {
+  margin:0;
+}
+
+.hero {
   text-align:center;
+  padding:60px 20px;
 }
-.header {
-  padding:40px 20px;
+
+.hero h1 {
+  font-size:32px;
 }
-.container {
-  background:white;
-  color:black;
-  margin:20px;
-  padding:25px;
-  border-radius:12px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+
+.hero p {
+  opacity:0.8;
+  max-width:500px;
+  margin:auto;
 }
+
 button {
   padding:12px 20px;
   border:none;
@@ -29,43 +45,75 @@ button {
   background:#2563eb;
   color:white;
   font-size:16px;
+  cursor:pointer;
+  margin-top:20px;
 }
+
+.section {
+  padding:50px 20px;
+  text-align:center;
+  background:#1e293b;
+}
+
+.card {
+  background:white;
+  color:black;
+  padding:25px;
+  border-radius:12px;
+  margin:20px auto;
+  max-width:600px;
+}
+
+.footer {
+  text-align:center;
+  padding:30px;
+  font-size:13px;
+  background:#111827;
+  opacity:0.7;
+}
+
 input {
-  padding:12px;
+  padding:10px;
   width:80%;
-  border-radius:6px;
-  border:1px solid #ccc;
   margin-top:10px;
 }
-.resultBox {
-  margin-top:20px;
-  padding:15px;
-  border-radius:8px;
-  background:#f1f5f9;
-}
-.footer {
-  margin-top:30px;
-  opacity:0.6;
-  font-size:12px;
-}
+
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <h1>VERITAS AI</h1>
-  <p>Enterprise Multi-Step Human Verification</p>
+<nav>
+  <h2>VERITAS AI</h2>
+  <div>Enterprise Verification</div>
+</nav>
+
+<div class="hero">
+  <h1>Human Activity Verification Infrastructure</h1>
+  <p>
+    VERITAS AI provides multi-step human verification for 
+    freelance platforms, hiring companies, and online businesses.
+  </p>
+  <button onclick="startSession()">Start Secure Verification</button>
 </div>
 
-<div class="container">
-  <button onclick="startSession()">Start Secure Verification</button>
-  <div id="testArea"></div>
-  <div id="resultArea"></div>
+<div class="section">
+  <h2>Why Companies Use VERITAS AI</h2>
+  <p>• Prevent bot registrations</p>
+  <p>• Reduce fake freelancers</p>
+  <p>• Secure remote hiring</p>
+  <p>• Generate verification tokens</p>
+</div>
+
+<div class="section" style="background:#0f172a;">
+  <div class="card">
+    <div id="testArea"></div>
+    <div id="resultArea"></div>
+  </div>
 </div>
 
 <div class="footer">
-  © 2026 VERITAS AI | Multi-Layer Verification Infrastructure
+  © 2026 VERITAS AI | Built by diamondcrest09
 </div>
 
 <script>
@@ -114,18 +162,7 @@ function nextRound() {
       "<p>Solve: " + n1 + " + " + n2 + "</p>" +
       "<input id='answer'><br><br>" +
       "<button onclick='checkAnswer()'>Submit</button>";
-  }
-
-  else if (type === 1) {
-    correctAnswer = "mode";
-    document.getElementById("testArea").innerHTML =
-      "<p><strong>Round " + round + " of 3</strong></p>" +
-      "<p>Type the last 4 letters of 'freedom'</p>" +
-      "<input id='answer'><br><br>" +
-      "<button onclick='checkAnswer()'>Submit</button>";
-  }
-
-  else {
+  } else {
     let randomIndex = Math.floor(Math.random() * businessQuestions.length);
     let selected = businessQuestions[randomIndex];
     correctAnswer = selected.answer;
@@ -150,7 +187,6 @@ function checkAnswer() {
   if (time > 1 && time < 12) score += 40;
 
   totalScore += score;
-
   nextRound();
 }
 
@@ -159,16 +195,13 @@ function finishVerification() {
   let status = averageScore >= 70 ? "Verified Human ✅" : "Verification Failed ⚠️";
 
   let resultHTML =
-    "<div class='resultBox'>" +
-    "<strong>Final Status:</strong> " + status + "<br>" +
-    "<strong>Average Human Score:</strong> " + averageScore + "%<br>";
+    "<p><strong>Final Status:</strong> " + status + "</p>" +
+    "<p><strong>Average Score:</strong> " + averageScore + "%</p>";
 
   if (averageScore >= 70) {
     let token = generateToken(averageScore);
-    resultHTML += "<br><strong>Verification Token:</strong><br>" + token;
+    resultHTML += "<p><strong>Verification Token:</strong><br>" + token + "</p>";
   }
-
-  resultHTML += "</div>";
 
   document.getElementById("testArea").innerHTML = "";
   document.getElementById("resultArea").innerHTML = resultHTML;
