@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VERITAS AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color:white;
+  text-align:center;
+}
+.header {
+  padding:40px 20px;
+}
+.container {
+  background:white;
+  color:black;
+  margin:20px;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+button {
+  padding:12px 20px;
+  border:none;
+  border-radius:8px;
+  background:#2563eb;
+  color:white;
+  font-size:16px;
+}
+input {
+  padding:12px;
+  width:80%;
+  border-radius:6px;
+  border:1px solid #ccc;
+  margin-top:10px;
+}
+.resultBox {
+  margin-top:20px;
+  padding:15px;
+  border-radius:8px;
+  background:#f1f5f9;
+}
+.footer {
+  margin-top:30px;
+  opacity:0.6;
+  font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>VERITAS AI</h1>
+  <p>Enterprise Multi-Step Human Verification</p>
+</div>
+
+<div class="container">
+  <button onclick="startSession()">Start Secure Verification</button>
+  <div id="testArea"></div>
+  <div id="resultArea"></div>
+</div>
+
+<div class="footer">
+  © 2026 VERITAS AI | Multi-Layer Verification Infrastructure
+</div>
+
+<script>
+
+let startTime;
+let correctAnswer;
+let round = 0;
+let totalScore = 0;
+
+const businessQuestions = [
+  { question: "Revenue minus expenses equals?", answer: "profit" },
+  { question: "Person who starts a business?", answer: "entrepreneur" },
+  { question: "Money used to start a business?", answer: "capital" },
+  { question: "Selling products online is called?", answer: "ecommerce" },
+  { question: "Customers who return show brand?", answer: "loyalty" }
+];
+
+function generateToken(score) {
+  let randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
+  let timestamp = Date.now();
+  return "VER-" + score + "-" + randomPart + "-" + timestamp;
+}
+
+function startSession() {
+  round = 0;
+  totalScore = 0;
+  document.getElementById("resultArea").innerHTML = "";
+  nextRound();
+}
+
+function nextRound() {
+  if (round >= 3) {
+    finishVerification();
+    return;
+  }
+
+  round++;
+  let type = Math.floor(Math.random() * 3);
+
+  if (type === 0) {
+    let n1 = Math.floor(Math.random() * 10) + 1;
+    let n2 = Math.floor(Math.random() * 10) + 1;
+    correctAnswer = n1 + n2;
+    document.getElementById("testArea").innerHTML =
+      "<p><strong>Round " + round + " of 3</strong></p>" +
+      "<p>Solve: " + n1 + " + " + n2 + "</p>" +
+      "<input id='answer'><br><br>" +
+      "<button onclick='checkAnswer()'>Submit</button>";
+  }
+
+  else if (type === 1) {
+    correctAnswer = "mode";
+    document.getElementById("testArea").innerHTML =
+      "<p><strong>Round " + round + " of 3</strong></p>" +
+      "<p>Type the last 4 letters of 'freedom'</p>" +
+      "<input id='answer'><br><br>" +
+      "<button onclick='checkAnswer()'>Submit</button>";
+  }
+
+  else {
+    let randomIndex = Math.floor(Math.random() * businessQuestions.length);
+    let selected = businessQuestions[randomIndex];
+    correctAnswer = selected.answer;
+
+    document.getElementById("testArea").innerHTML =
+      "<p><strong>Round " + round + " of 3</strong></p>" +
+      "<p>" + selected.question + "</p>" +
+      "<input id='answer'><br><br>" +
+      "<button onclick='checkAnswer()'>Submit</button>";
+  }
+
+  startTime = new Date().getTime();
+}
+
+function checkAnswer() {
+  let endTime = new Date().getTime();
+  let time = (endTime - startTime) / 1000;
+  let answer = document.getElementById("answer").value.toLowerCase().trim();
+
+  let score = 0;
+  if (answer == correctAnswer) score += 60;
+  if (time > 1 && time < 12) score += 40;
+
+  totalScore += score;
+
+  nextRound();
+}
+
+function finishVerification() {
+  let averageScore = Math.round(totalScore / 3);
+  let status = averageScore >= 70 ? "Verified Human ✅" : "Verification Failed ⚠️";
+
+  let resultHTML =
+    "<div class='resultBox'>" +
+    "<strong>Final Status:</strong> " + status + "<br>" +
+    "<strong>Average Human Score:</strong> " + averageScore + "%<br>";
+
+  if (averageScore >= 70) {
+    let token = generateToken(averageScore);
+    resultHTML += "<br><strong>Verification Token:</strong><br>" + token;
+  }
+
+  resultHTML += "</div>";
+
+  document.getElementById("testArea").innerHTML = "";
+  document.getElementById("resultArea").innerHTML = resultHTML;
+}
+
+</script>
+
+</body>
+</html>
