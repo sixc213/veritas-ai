@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -238,6 +239,16 @@ function finishVerification() {
   let averageScore = Math.round(totalScore / 3);
   let status = averageScore >= 70 ? "Verified Human ✅" : "Verification Failed ⚠️";
 
+let token = null;
+
+if (averageScore >= 70) {
+  token = generateToken(averageScore);
+  resultHTML += "<p><strong>Verification Token:</strong><br>" + token + "</p>";
+}
+
+// Save to Supabase
+saveVerification(token, averageScore, status);
+
   let resultHTML =
     "<p><strong>Final Status:</strong> " + status + "</p>" +
     "<p><strong>Average Score:</strong> " + averageScore + "%</p>";
@@ -251,6 +262,37 @@ function finishVerification() {
   document.getElementById("resultArea").innerHTML = resultHTML;
 }
 
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://zljzzlvzuktqzjcqenhw.supabase.co”;
+const SUPABASE_ANON_KEY = “eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpsanp6bHZ6dWt0cXpqY3Flbmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzc2ODIsImV4cCI6MjA4ODA1MzY4Mn0.S7L2XCOTetZA37GI1WckjpW7u23W6hcAHjLhSv8ThXM”;
+
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+// Save verification result to database
+async function saveVerification(token, score, status) {
+  const { error } = await supabase
+    .from("verifications")
+    .insert([
+      {
+        token: token,
+        score: score,
+        status: status
+      }
+    ]);
+
+  if (error) {
+    console.error("Database error:", error);
+  } else {
+    console.log("Verification saved successfully");
+  }
+}
 </script>
 
 </body>
