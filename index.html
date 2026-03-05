@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -266,6 +267,108 @@ function finishVerification() {
 
 <!-- Supabase connection + save function -->
 <script>
+
+let startTime;
+let correctAnswer;
+let round = 0;
+let totalScore = 0;
+
+const businessQuestions = [
+  { question: "Revenue minus expenses equals?", answer: "profit" },
+  { question: "Person who starts a business?", answer: "entrepreneur" },
+  { question: "Money used to start a business?", answer: "capital" },
+  { question: "Selling products online is called?", answer: "ecommerce" },
+  { question: "Customers who return show brand?", answer: "loyalty" }
+];
+
+function generateToken(score) {
+  let randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
+  let timestamp = Date.now();
+  return "VER-" + score + "-" + randomPart + "-" + timestamp;
+}
+
+function startSession() {
+  round = 0;
+  totalScore = 0;
+  document.getElementById("resultArea").innerHTML = "";
+  nextRound();
+}
+
+function nextRound() {
+  if (round >= 3) {
+    finishVerification();
+    return;
+  }
+
+  round++;
+  let type = Math.floor(Math.random() * 2);
+
+  if (type === 0) {
+    let n1 = Math.floor(Math.random() * 10) + 1;
+    let n2 = Math.floor(Math.random() * 10) + 1;
+    correctAnswer = n1 + n2;
+
+    document.getElementById("testArea").innerHTML =
+      "<p><strong>Round " + round + " of 3</strong></p>" +
+      "<p>Solve: " + n1 + " + " + n2 + "</p>" +
+      "<input id='answer'><br><br>" +
+      "<button onclick='checkAnswer()'>Submit</button>";
+
+  } else {
+    let randomIndex = Math.floor(Math.random() * businessQuestions.length);
+    let selected = businessQuestions[randomIndex];
+    correctAnswer = selected.answer;
+
+    document.getElementById("testArea").innerHTML =
+      "<p><strong>Round " + round + " of 3</strong></p>" +
+      "<p>" + selected.question + "</p>" +
+      "<input id='answer'><br><br>" +
+      "<button onclick='checkAnswer()'>Submit</button>";
+  }
+
+  startTime = new Date().getTime();
+}
+
+function checkAnswer() {
+  let endTime = new Date().getTime();
+  let time = (endTime - startTime) / 1000;
+  let answer = document.getElementById("answer").value.toLowerCase().trim();
+
+  let score = 0;
+  if (answer == correctAnswer) score += 60;
+  if (time > 1 && time < 12) score += 40;
+
+  totalScore += score;
+  nextRound();
+}
+
+function finishVerification() {
+  let averageScore = Math.round(totalScore / 3);
+  let status = averageScore >= 70 ? "Verified Human ✅" : "Verification Failed ⚠️";
+
+  let resultHTML =
+    "<p><strong>Final Status:</strong> " + status + "</p>" +
+    "<p><strong>Average Score:</strong> " + averageScore + "%</p>";
+
+  let token = null;
+
+  if (averageScore >= 70) {
+    token = generateToken(averageScore);
+    resultHTML += "<p><strong>Verification Token:</strong><br>" + token + "</p>";
+  }
+
+  document.getElementById("testArea").innerHTML = "";
+  document.getElementById("resultArea").innerHTML = resultHTML;
+
+  saveVerification(token, averageScore, status);
+}
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
 const SUPABASE_URL = "https://zljzzlvzuktqzjcqenhw.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpsanp6bHZ6dWt0cXpqY3Flbmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzc2ODIsImV4cCI6MjA4ODA1MzY4Mn0.S7L2XCOTetZA37GI1WckjpW7u23W6hcAHjLhSv8ThXM";
 
@@ -275,28 +378,17 @@ const supabase = window.supabase.createClient(
 );
 
 async function saveVerification(token, score, status) {
-  console.log("Saving to database:", token, score, status);
-
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("verifications")
     .insert([
-      {
-        token: token,
-        score: score,
-        status: status
-      }
+      { token: token, score: score, status: status }
     ]);
 
   if (error) {
     console.error("Database error:", error);
-    alert("Database error: " + error.message);
-  } else {
-    console.log("Saved successfully:", data);
-    alert("Saved to database successfully!");
   }
 }
 
 </script>
-
 </body>
 </html>
