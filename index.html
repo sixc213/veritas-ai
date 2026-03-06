@@ -244,9 +244,12 @@ function finishVerification() {
     "<p><strong>Average Score:</strong> " + averageScore + "%</p>";
 
   if (averageScore >= 70) {
-    let token = generateToken(averageScore);
-    resultHTML += "<p><strong>Verification Token:</strong><br>" + token + "</p>";
-  }
+  let token = generateToken(averageScore);
+
+  resultHTML += "<p><strong>Verification Token:</strong><br>" + token + "</p>";
+
+  saveVerification(token, averageScore, status);
+}
 
   document.getElementById("testArea").innerHTML = "";
   document.getElementById("resultArea").innerHTML = resultHTML;
