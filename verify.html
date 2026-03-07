@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Verify Token | VERITAS AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+text-align:center;
+padding:40px;
+}
+
+.box{
+background:#1e293b;
+padding:30px;
+border-radius:12px;
+max-width:500px;
+margin:auto;
+}
+
+input{
+padding:10px;
+width:80%;
+margin-top:10px;
+}
+
+button{
+padding:10px 20px;
+margin-top:15px;
+background:#2563eb;
+border:none;
+color:white;
+border-radius:8px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>VERITAS AI Token Verification</h2>
+
+<p>Enter a verification token</p>
+
+<input id="tokenInput" placeholder="VER-XXXX-XXXX">
+
+<br>
+
+<button onclick="checkToken()">Verify Token</button>
+
+<div id="result"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL = "https://zljzzlvzuktqzjcqenhw.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpsanp6bHZ6dWt0cXpqY3Flbmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzc2ODIsImV4cCI6MjA4ODA1MzY4Mn0.S7L2XCOTetZA37GI1WckjpW7u23W6hcAHjLhSv8ThXM";
+
+const supabase = window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+);
+
+async function checkToken(){
+
+let token = document.getElementById("tokenInput").value;
+
+const { data, error } = await supabase
+.from("verifications")
+.select("*")
+.eq("token", token);
+
+if(data && data.length > 0){
+
+let row = data[0];
+
+document.getElementById("result").innerHTML =
+"<p><strong>Status:</strong> " + row.status + "</p>" +
+"<p><strong>Score:</strong> " + row.score + "</p>";
+
+}else{
+
+document.getElementById("result").innerHTML =
+"<p style='color:red'>Token not found</p>";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
