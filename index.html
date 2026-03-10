@@ -393,5 +393,39 @@ async function saveVerification(token, score, status) {
 }
 
 </script>
+  <script>
+
+let startTime = Date.now();
+let typingSpeed = [];
+let lastKeyTime = Date.now();
+
+document.addEventListener("keydown", () => {
+
+  let now = Date.now();
+  let speed = now - lastKeyTime;
+
+  typingSpeed.push(speed);
+
+  lastKeyTime = now;
+
+});
+
+function calculateHumanScore(){
+
+  let avgSpeed = typingSpeed.reduce((a,b)=>a+b,0) / typingSpeed.length;
+
+  let totalTime = (Date.now() - startTime) / 1000;
+
+  let score = 100;
+
+  if(avgSpeed < 30) score -= 40;
+  if(totalTime < 5) score -= 30;
+  if(avgSpeed > 1000) score -= 10;
+
+  return Math.max(score,0);
+
+}
+
+</script>
 </body>
 </html>
