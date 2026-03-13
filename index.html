@@ -365,7 +365,22 @@ function finishVerification() {
 
   saveVerification(token, averageScore, status);
 }
+const humanScore = calculateHumanScore();
 
+fetch("/api/verify", {
+  method:"POST",
+  headers:{
+    "Content-Type":"application/json"
+  },
+  body:JSON.stringify({
+    score: humanScore
+  })
+})
+.then(res=>res.json())
+.then(data=>{
+  console.log(data);
+});
+  
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
