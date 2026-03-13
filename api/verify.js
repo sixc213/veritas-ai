@@ -1,17 +1,17 @@
 export default function handler(req, res) {
 
-const score = Math.floor(Math.random() * 40) + 60;
+  const { score } = req.body;
 
-let status = score >= 70 
-? "Verified Human"
-: "Verification Failed";
+  let status = "Bot";
 
-const token = "VER-" + score + "-" + Math.random().toString(36).substring(2,8).toUpperCase();
+  if(score > 60){
+    status = "Verified Human";
+  }
 
-res.status(200).json({
-score: score,
-status: status,
-token: token
-});
+  res.status(200).json({
+    score: score,
+    status: status,
+    token: "VER-" + score + "-" + Math.random().toString(36).substring(7)
+  });
 
 }
