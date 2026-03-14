@@ -3,46 +3,31 @@
 <head>
 <title>VERITAS AI Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 
 body{
 font-family:Arial;
 background:#0f172a;
 color:white;
-padding:40px;
-}
-
-h1{
-text-align:center;
-}
-
-.stats{
-display:flex;
-justify-content:center;
-gap:20px;
-flex-wrap:wrap;
-margin-bottom:40px;
-}
-
-.card{
-background:#1e293b;
-padding:20px;
-border-radius:10px;
-width:200px;
 text-align:center;
 }
 
 table{
-width:100%;
+width:90%;
+margin:auto;
 border-collapse:collapse;
 background:white;
 color:black;
 }
 
 th,td{
-padding:10px;
-border:1px solid #ccc;
+padding:12px;
+border:1px solid #ddd;
+}
+
+th{
+background:#2563eb;
+color:white;
 }
 
 </style>
@@ -50,31 +35,10 @@ border:1px solid #ccc;
 
 <body>
 
-<h1>VERITAS AI Dashboard</h1>
-
-<div class="stats">
-
-<div class="card">
-<h3>Total Verifications</h3>
-<p id="total">0</p>
-</div>
-
-<div class="card">
-<h3>Verified Humans</h3>
-<p id="humans">0</p>
-</div>
-
-<div class="card">
-<h3>Failed</h3>
-<p id="failed">0</p>
-</div>
-
-</div>
-
-<h2>Recent Verifications</h2>
+<h1>VERITAS AI Admin Dashboard</h1>
+<p>Live verification results</p>
 
 <table>
-
 <thead>
 <tr>
 <th>Token</th>
@@ -91,33 +55,24 @@ border:1px solid #ccc;
 
 <script>
 
-const SUPABASE_URL = "https://zljzzlvzuktqzjcqenhw.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpsanp6bHZ6dWt0cXpqY3Flbmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzc2ODIsImV4cCI6MjA4ODA1MzY4Mn0.S7L2XCOTetZA37GI1WckjpW7u23W6hcAHjLhSv8ThXM";
+const SUPABASE_URL = "https://zljzzlvzuktqzjcqenhw.supabase.co"
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpsanp6bHZ6dWt0cXpqY3Flbmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzc2ODIsImV4cCI6MjA4ODA1MzY4Mn0.S7L2XCOTetZA37GI1WckjpW7u23W6hcAHjLhSv8ThXM"
 
 const supabase = window.supabase.createClient(
 SUPABASE_URL,
-SUPABASE_ANON_KEY
-);
+SUPABASE_KEY
+)
 
-async function loadDashboard(){
+async function loadData(){
 
-const { data, error } = await supabase
+let { data } = await supabase
 .from("verifications")
-.select("*");
+.select("*")
+.order("id",{ascending:false})
 
-if(!data) return;
+let table=""
 
-let total = data.length;
-let humans = data.filter(v => v.status.includes("Verified")).length;
-let failed = total - humans;
-
-document.getElementById("total").innerText = total;
-document.getElementById("humans").innerText = humans;
-document.getElementById("failed").innerText = failed;
-
-let table = "";
-
-data.slice(-10).reverse().forEach(v => {
+data.forEach(v=>{
 
 table += `
 <tr>
@@ -125,15 +80,15 @@ table += `
 <td>${v.score}</td>
 <td>${v.status}</td>
 </tr>
-`;
+`
 
-});
+})
 
-document.getElementById("tableBody").innerHTML = table;
+document.getElementById("tableBody").innerHTML = table
 
 }
 
-loadDashboard();
+loadData()
 
 </script>
 
