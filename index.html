@@ -196,7 +196,20 @@ let avg=Math.round(totalScore/3)
 let status=avg>=70?"Verified Human":"Verification Failed"
 
 let token=generateToken(avg)
-
+  
+fetch("https://veritas-ai-gamma.vercel.app/api/verify", {
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+score: avg
+})
+})
+.then(res=>res.json())
+.then(data=>{
+console.log(data);
+});
 document.getElementById("testArea").innerHTML=""
 
 document.getElementById("resultArea").style.display="block"
