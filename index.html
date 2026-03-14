@@ -1,92 +1,58 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 <title>VERITAS AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 
-body {
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#0f172a;
-  color:white;
+body{
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
 }
 
-nav {
-  display:flex;
-  justify-content:space-between;
-  padding:20px;
-  background:#111827;
+nav{
+display:flex;
+justify-content:space-between;
+padding:20px;
+background:#111827;
 }
 
-.hero {
-  text-align:center;
-  padding:60px 20px;
+.hero{
+text-align:center;
+padding:60px 20px;
 }
 
-.hero h1 {
-  font-size:32px;
+button{
+padding:12px 20px;
+border:none;
+border-radius:8px;
+background:#2563eb;
+color:white;
+font-size:16px;
+cursor:pointer;
 }
 
-.hero p {
-  opacity:0.8;
-  max-width:500px;
-  margin:auto;
+.section{
+padding:50px 20px;
+text-align:center;
 }
 
-button {
-  padding:12px 20px;
-  border:none;
-  border-radius:8px;
-  background:#2563eb;
-  color:white;
-  font-size:16px;
-  cursor:pointer;
-  margin-top:20px;
+.card{
+background:white;
+color:black;
+padding:25px;
+border-radius:12px;
+max-width:600px;
+margin:auto;
 }
 
-.section {
-  padding:60px 20px;
-  text-align:center;
-}
-
-.card {
-  background:white;
-  color:black;
-  padding:25px;
-  border-radius:12px;
-  margin:20px auto;
-  max-width:600px;
-}
-
-.pricing {
-  background:#1e293b;
-  padding:40px 20px;
-  text-align:center;
-}
-
-.priceBox {
-  background:white;
-  color:black;
-  padding:20px;
-  border-radius:12px;
-  margin:20px auto;
-  max-width:300px;
-}
-
-.footer {
-  text-align:center;
-  padding:30px;
-  font-size:13px;
-  background:#111827;
-  opacity:0.7;
-}
-
-input {
-  padding:10px;
-  width:80%;
-  margin-top:10px;
+input{
+padding:10px;
+width:80%;
+margin-top:10px;
 }
 
 </style>
@@ -95,377 +61,157 @@ input {
 <body>
 
 <nav>
-  <h2>VERITAS AI</h2>
-  <div>Enterprise Verification Infrastructure</div>
+<h2>VERITAS AI</h2>
+<div>Human Verification Infrastructure</div>
 </nav>
 
 <div class="hero">
-  <h1>Secure Human Verification for Modern Platforms</h1>
-  <p>
-    Protect freelance platforms, hiring systems, and online businesses 
-    from bots and fake accounts with intelligent multi-step verification.
-  </p>
-  <button onclick="startSession()">Run Live Demo</button>
+<h1>AI Powered Human Verification</h1>
+<p>Verify freelancers, job applicants and users instantly.</p>
+<button onclick="startSession()">Run Live Demo</button>
 </div>
 
 <div class="section">
-  <h2>How It Works</h2>
-  <p>• Multi-round human response testing</p>
-  <p>• Behavioral timing analysis</p>
-  <p>• AI-generated verification token</p>
-  <p>• Enterprise-ready infrastructure</p>
-</div>
+<div class="card">
 
-<div class="pricing">
-  <h2>Pricing</h2>
+<div id="testArea"></div>
 
-  <div class="priceBox">
-    <h3>Starter</h3>
-    <p>Up to 1,000 verifications/month</p>
-    <h2>$50/month</h2>
-  </div>
-
-  <div class="priceBox">
-    <h3>Professional</h3>
-    <p>Up to 10,000 verifications/month</p>
-    <h2>$100/month</h2>
-  </div>
-
-  <div class="priceBox">
-    <h3>Enterprise</h3>
-    <p>Unlimited verifications + API Access</p>
-    <h2>Custom Pricing</h2>
-  </div>
-
-</div>
-
-<div class="section">
-  <h2>For Companies</h2>
-  <p>
-    Integrate VERITAS AI into your platform to verify freelancers, 
-    job applicants, and online users instantly.
-  </p>
-  <p>
-    Contact: veritas@yourdomain.com
-  </p>
-</div>
-
-<div class="section" style="background:#1e293b;">
-  <div class="card">
-    <div id="testArea"></div>
-   <div id="resultArea">
+<div id="resultArea">
 
 <h3>VERITAS AI Result</h3>
 
 <div style="background:#eee;width:100%;height:25px;border-radius:10px;">
-  <div id="scoreBar" style="height:25px;width:0%;background:#4CAF50;border-radius:10px;"></div>
+<div id="scoreBar" style="height:25px;width:0%;background:#4CAF50;border-radius:10px;"></div>
 </div>
 
 <p id="scoreText"></p>
 <p id="statusText"></p>
 <p id="tokenText"></p>
 
-</div> </div>
-  </div>
 </div>
 
-<div class="footer">
-  © 2026 VERITAS AI | Built by diamondcrest09
+</div>
 </div>
 
 <script>
 
-let startTime;
-let correctAnswer;
-let round = 0;
-let totalScore = 0;
+let startTime
+let correctAnswer
+let round=0
+let totalScore=0
 
-const businessQuestions = [
-  { question: "Revenue minus expenses equals?", answer: "profit" },
-  { question: "Person who starts a business?", answer: "entrepreneur" },
-  { question: "Money used to start a business?", answer: "capital" },
-  { question: "Selling products online is called?", answer: "ecommerce" },
-  { question: "Customers who return show brand?", answer: "loyalty" }
-];
+const businessQuestions=[
+{question:"Revenue minus expenses equals?",answer:"profit"},
+{question:"Person who starts a business?",answer:"entrepreneur"},
+{question:"Money used to start a business?",answer:"capital"},
+{question:"Selling products online is called?",answer:"ecommerce"}
+]
 
-function generateToken(score) {
-  let randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
-  let timestamp = Date.now();
-  return "VER-" + score + "-" + randomPart + "-" + timestamp;
+function generateToken(score){
+
+let random=Math.random().toString(36).substring(2,8).toUpperCase()
+
+return "VER-"+score+"-"+random
+
 }
 
-function startSession() {
-  round = 0;
-  totalScore = 0;
-  document.getElementById("resultArea").innerHTML = "";
-  nextRound();
+function startSession(){
+
+round=0
+totalScore=0
+
+document.getElementById("resultArea").style.display="none"
+
+nextRound()
+
 }
 
-function nextRound() {
-  if (round >= 3) {
-    finishVerification();
-    return;
-  }
+function nextRound(){
 
-  round++;
-  let type = Math.floor(Math.random() * 2);
-
-  if (type === 0) {
-    let n1 = Math.floor(Math.random() * 10) + 1;
-    let n2 = Math.floor(Math.random() * 10) + 1;
-    correctAnswer = n1 + n2;
-    document.getElementById("testArea").innerHTML =
-      "<p><strong>Round " + round + " of 3</strong></p>" +
-      "<p>Solve: " + n1 + " + " + n2 + "</p>" +
-      "<input id='answer'><br><br>" +
-      "<button onclick='checkAnswer()'>Submit</button>";
-  } else {
-    let randomIndex = Math.floor(Math.random() * businessQuestions.length);
-    let selected = businessQuestions[randomIndex];
-    correctAnswer = selected.answer;
-
-    document.getElementById("testArea").innerHTML =
-      "<p><strong>Round " + round + " of 3</strong></p>" +
-      "<p>" + selected.question + "</p>" +
-      "<input id='answer'><br><br>" +
-      "<button onclick='checkAnswer()'>Submit</button>";
-  }
-
-  startTime = new Date().getTime();
+if(round>=3){
+finishVerification()
+return
 }
 
-function checkAnswer() {
-  let endTime = new Date().getTime();
-  let time = (endTime - startTime) / 1000;
-  let answer = document.getElementById("answer").value.toLowerCase().trim();
+round++
 
-  let score = 0;
-  if (answer == correctAnswer) score += 60;
-  if (time > 1 && time < 12) score += 40;
+let type=Math.floor(Math.random()*2)
 
-  totalScore += score;
-  nextRound();
+if(type===0){
+
+let n1=Math.floor(Math.random()*10)+1
+let n2=Math.floor(Math.random()*10)+1
+
+correctAnswer=n1+n2
+
+document.getElementById("testArea").innerHTML=
+
+"<h3>Round "+round+" of 3</h3>"+
+"<p>Solve: "+n1+" + "+n2+"</p>"+
+"<input id='answer'><br><br>"+
+"<button onclick='checkAnswer()'>Submit</button>"
+
 }
 
-function finishVerification() {
-  let averageScore = Math.round(totalScore / 3);
-  let status = averageScore >= 70 ? "Verified Human ✅" : "Verification Failed ⚠️";
+else{
 
-  let resultHTML =
-    "<p><strong>Final Status:</strong> " + status + "</p>" +
-    "<p><strong>Average Score:</strong> " + averageScore + "%</p>";
+let q=businessQuestions[Math.floor(Math.random()*businessQuestions.length)]
 
-  if (averageScore >= 70) {
-  let token = generateToken(averageScore);
+correctAnswer=q.answer
 
-  resultHTML += "<p><strong>Verification Token:</strong><br>" + token + "</p>";
+document.getElementById("testArea").innerHTML=
 
-  saveVerification(token, averageScore, status);
+"<h3>Round "+round+" of 3</h3>"+
+"<p>"+q.question+"</p>"+
+"<input id='answer'><br><br>"+
+"<button onclick='checkAnswer()'>Submit</button>"
+
 }
 
-  document.getElementById("testArea").innerHTML = "";
-  document.getElementById("resultArea").innerHTML = resultHTML;
+startTime=Date.now()
+
 }
 
+function checkAnswer(){
 
-<!-- Your main verification script -->
-<script>
-   // ALL your original VERITAS AI functions here
-   // generateQuestions()
-   // finishVerification()
-   // generateToken()
-   // etc
-</script>
+let time=(Date.now()-startTime)/1000
 
-<!-- Supabase library -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+let answer=document.getElementById("answer").value.toLowerCase().trim()
 
-<!-- Supabase connection + save function -->
-<script>
+let score=0
 
-let startTime;
-let correctAnswer;
-let round = 0;
-let totalScore = 0;
+if(answer==correctAnswer) score+=60
+if(time>1 && time<12) score+=40
 
-const businessQuestions = [
-  { question: "Revenue minus expenses equals?", answer: "profit" },
-  { question: "Person who starts a business?", answer: "entrepreneur" },
-  { question: "Money used to start a business?", answer: "capital" },
-  { question: "Selling products online is called?", answer: "ecommerce" },
-  { question: "Customers who return show brand?", answer: "loyalty" }
-];
+totalScore+=score
 
-function generateToken(score) {
-  let randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
-  let timestamp = Date.now();
-  return "VER-" + score + "-" + randomPart + "-" + timestamp;
+nextRound()
+
 }
 
-function startSession() {
-  round = 0;
-  totalScore = 0;
-  document.getElementById("resultArea").innerHTML = "";
-  nextRound();
-}
+function finishVerification(){
 
-function nextRound() {
-  if (round >= 3) {
-    finishVerification();
-    return;
-  }
+let avg=Math.round(totalScore/3)
 
-  round++;
-  let type = Math.floor(Math.random() * 2);
+let status=avg>=70?"Verified Human":"Verification Failed"
 
-  if (type === 0) {
-    let n1 = Math.floor(Math.random() * 10) + 1;
-    let n2 = Math.floor(Math.random() * 10) + 1;
-    correctAnswer = n1 + n2;
+let token=generateToken(avg)
 
-    document.getElementById("testArea").innerHTML =
-      "<p><strong>Round " + round + " of 3</strong></p>" +
-      "<p>Solve: " + n1 + " + " + n2 + "</p>" +
-      "<input id='answer'><br><br>" +
-      "<button onclick='checkAnswer()'>Submit</button>";
+document.getElementById("testArea").innerHTML=""
 
-  } else {
-    let randomIndex = Math.floor(Math.random() * businessQuestions.length);
-    let selected = businessQuestions[randomIndex];
-    correctAnswer = selected.answer;
+document.getElementById("resultArea").style.display="block"
 
-    document.getElementById("testArea").innerHTML =
-      "<p><strong>Round " + round + " of 3</strong></p>" +
-      "<p>" + selected.question + "</p>" +
-      "<input id='answer'><br><br>" +
-      "<button onclick='checkAnswer()'>Submit</button>";
-  }
+document.getElementById("scoreBar").style.width=avg+"%"
 
-  startTime = new Date().getTime();
-}
+document.getElementById("scoreText").innerText="Human Score: "+avg+"%"
 
-function checkAnswer() {
-  let endTime = new Date().getTime();
-  let time = (endTime - startTime) / 1000;
-  let answer = document.getElementById("answer").value.toLowerCase().trim();
+document.getElementById("statusText").innerText="Status: "+status
 
-  let score = 0;
-  if (answer == correctAnswer) score += 60;
-  if (time > 1 && time < 12) score += 40;
-
-  totalScore += score;
-  nextRound();
-}
-
-function finishVerification() {
-  let averageScore = Math.round(totalScore / 3);
-  let status = averageScore >= 70 ? "Verified Human ✅" : "Verification Failed ⚠️";
-
-  let resultHTML =
-    "<p><strong>Final Status:</strong> " + status + "</p>" +
-    "<p><strong>Average Score:</strong> " + averageScore + "%</p>";
-
-  let token = null;
-
-  if (averageScore >= 70) {
-    token = generateToken(averageScore);
-    resultHTML += "<p><strong>Verification Token:</strong><br>" + token + "</p>";
-  }
-
-  document.getElementById("testArea").innerHTML = "";
-  document.getElementById("resultArea").innerHTML = resultHTML;
-
-  saveVerification(token, averageScore, status);
-}
-const humanScore = calculateHumanScore();
-
-fetch("/api/verify", {
-  method:"POST",
-  headers:{
-    "Content-Type":"application/json"
-  },
-  body:JSON.stringify({
-    score: humanScore
-  })
-})
-.then(res=>res.json())
-.then(data=>{
-
-document.getElementById("scoreBar").style.width = data.score + "%";
-
-document.getElementById("scoreText").innerText =
-"Human Score: " + data.score + "%";
-
-document.getElementById("statusText").innerText =
-"Status: " + data.status;
-
-document.getElementById("tokenText").innerText =
-"Verification Token: " + data.token;
-
-});
-  console.log(data);
-});
-  
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-
-const SUPABASE_URL = "https://zljzzlvzuktqzjcqenhw.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpsanp6bHZ6dWt0cXpqY3Flbmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzc2ODIsImV4cCI6MjA4ODA1MzY4Mn0.S7L2XCOTetZA37GI1WckjpW7u23W6hcAHjLhSv8ThXM";
-
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
-
-async function saveVerification(token, score, status) {
-  const { error } = await supabase
-    .from("verifications")
-    .insert([
-      { token: token, score: score, status: status }
-    ]);
-
-  if (error) {
-    console.error("Database error:", error);
-  }
-}
-
-</script>
-  <script>
-
-let startTime = Date.now();
-let typingSpeed = [];
-let lastKeyTime = Date.now();
-
-document.addEventListener("keydown", () => {
-
-  let now = Date.now();
-  let speed = now - lastKeyTime;
-
-  typingSpeed.push(speed);
-
-  lastKeyTime = now;
-
-});
-
-function calculateHumanScore(){
-
-  let avgSpeed = typingSpeed.reduce((a,b)=>a+b,0) / typingSpeed.length;
-
-  let totalTime = (Date.now() - startTime) / 1000;
-
-  let score = 100;
-
-  if(avgSpeed < 30) score -= 40;
-  if(totalTime < 5) score -= 30;
-  if(avgSpeed > 1000) score -= 10;
-
-  return Math.max(score,0);
+document.getElementById("tokenText").innerText="Token: "+token
 
 }
 
 </script>
+
 </body>
 </html>
