@@ -225,6 +225,18 @@ document.getElementById("tokenText").innerText="Token: "+token
 }
 
 </script>
+function saveVerification(token, score, status){
 
+let results = JSON.parse(localStorage.getItem("veritas_results")) || [];
+
+results.push({
+token: token,
+score: score,
+status: status
+});
+
+localStorage.setItem("veritas_results", JSON.stringify(results));
+
+}
 </body>
 </html>
