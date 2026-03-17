@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-
 body{
 margin:0;
 font-family:Arial;
@@ -31,12 +30,11 @@ border:none;
 border-radius:8px;
 background:#2563eb;
 color:white;
-font-size:16px;
 cursor:pointer;
 }
 
 .section{
-padding:50px 20px;
+padding:40px 20px;
 text-align:center;
 }
 
@@ -54,7 +52,6 @@ padding:10px;
 width:80%;
 margin-top:10px;
 }
-
 </style>
 </head>
 
@@ -62,12 +59,12 @@ margin-top:10px;
 
 <nav>
 <h2>VERITAS AI</h2>
-<div>Human Verification Infrastructure</div>
+<div>Human Verification</div>
 </nav>
 
 <div class="hero">
-<h1>AI Powered Human Verification</h1>
-<p>Verify freelancers, job applicants and users instantly.</p>
+<h1>AI Human Verification</h1>
+<p>Detect real humans vs bots instantly</p>
 <button onclick="startSession()">Run Live Demo</button>
 </div>
 
@@ -76,7 +73,7 @@ margin-top:10px;
 
 <div id="testArea"></div>
 
-<div id="resultArea">
+<div id="resultArea" style="display:none;">
 
 <h3>VERITAS AI Result</h3>
 
@@ -100,30 +97,22 @@ let correctAnswer
 let round=0
 let totalScore=0
 
-const businessQuestions=[
-{question:"Revenue minus expenses equals?",answer:"profit"},
-{question:"Person who starts a business?",answer:"entrepreneur"},
-{question:"Money used to start a business?",answer:"capital"},
-{question:"Selling products online is called?",answer:"ecommerce"}
+const questions=[
+{q:"2 + 5",a:"7"},
+{q:"Capital of Nigeria?",a:"abuja"},
+{q:"3 + 6",a:"9"},
+{q:"Color of sky?",a:"blue"}
 ]
 
 function generateToken(score){
-
-let random=Math.random().toString(36).substring(2,8).toUpperCase()
-
-return "VER-"+score+"-"+random
-
+return "VER-"+score+"-"+Math.random().toString(36).substring(2,8).toUpperCase()
 }
 
 function startSession(){
-
 round=0
 totalScore=0
-
 document.getElementById("resultArea").style.display="none"
-
 nextRound()
-
 }
 
 function nextRound(){
@@ -135,47 +124,22 @@ return
 
 round++
 
-let type=Math.floor(Math.random()*2)
+let item=questions[Math.floor(Math.random()*questions.length)]
 
-if(type===0){
-
-let n1=Math.floor(Math.random()*10)+1
-let n2=Math.floor(Math.random()*10)+1
-
-correctAnswer=n1+n2
+correctAnswer=item.a
 
 document.getElementById("testArea").innerHTML=
-
 "<h3>Round "+round+" of 3</h3>"+
-"<p>Solve: "+n1+" + "+n2+"</p>"+
+"<p>"+item.q+"</p>"+
 "<input id='answer'><br><br>"+
 "<button onclick='checkAnswer()'>Submit</button>"
-
-}
-
-else{
-
-let q=businessQuestions[Math.floor(Math.random()*businessQuestions.length)]
-
-correctAnswer=q.answer
-
-document.getElementById("testArea").innerHTML=
-
-"<h3>Round "+round+" of 3</h3>"+
-"<p>"+q.question+"</p>"+
-"<input id='answer'><br><br>"+
-"<button onclick='checkAnswer()'>Submit</button>"
-
-}
 
 startTime=Date.now()
-
 }
 
 function checkAnswer(){
 
 let time=(Date.now()-startTime)/1000
-
 let answer=document.getElementById("answer").value.toLowerCase().trim()
 
 let score=0
@@ -186,6 +150,15 @@ if(time>1 && time<12) score+=40
 totalScore+=score
 
 nextRound()
+}
+
+function saveVerification(token, score, status){
+
+let results = JSON.parse(localStorage.getItem("veritas_results")) || []
+
+results.push({token,score,status})
+
+localStorage.setItem("veritas_results", JSON.stringify(results))
 
 }
 
@@ -193,30 +166,19 @@ function finishVerification(){
 
 let avg=Math.round(totalScore/3)
 
-let status=avg>=70?"Verified Human":"Verification Failed"
+let status=avg>=70?"Verified Human":"Bot"
 
 let token=generateToken(avg)
-  
-fetch("https://veritas-ai-gamma.vercel.app/api/verify", {
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-score: avg
-})
-})
-.then(res=>res.json())
-.then(data=>{
-console.log(data);
-});
+
+saveVerification(token, avg, status)
+
 document.getElementById("testArea").innerHTML=""
 
 document.getElementById("resultArea").style.display="block"
 
 document.getElementById("scoreBar").style.width=avg+"%"
 
-document.getElementById("scoreText").innerText="Human Score: "+avg+"%"
+document.getElementById("scoreText").innerText="Score: "+avg+"%"
 
 document.getElementById("statusText").innerText="Status: "+status
 
@@ -225,18 +187,6 @@ document.getElementById("tokenText").innerText="Token: "+token
 }
 
 </script>
-function saveVerification(token, score, status){
 
-let results = JSON.parse(localStorage.getItem("veritas_results")) || [];
-
-results.push({
-token: token,
-score: score,
-status: status
-});
-
-localStorage.setItem("veritas_results", JSON.stringify(results));
-
-}
 </body>
 </html>
