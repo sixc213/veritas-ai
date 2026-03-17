@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>VERITAS AI Dashboard</title>
+<title>VERITAS Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
 
+<style>
 body{
 font-family:Arial;
 background:#0f172a;
@@ -29,14 +29,12 @@ th{
 background:#2563eb;
 color:white;
 }
-
 </style>
 </head>
 
 <body>
 
-<h1>VERITAS AI Admin Dashboard</h1>
-<p>Live verification results</p>
+<h1>VERITAS AI Dashboard</h1>
 
 <table>
 <thead>
@@ -51,27 +49,23 @@ color:white;
 
 </table>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
 
-let results = JSON.parse(localStorage.getItem("veritas_results")) || [];
+let results = JSON.parse(localStorage.getItem("veritas_results")) || []
 
-let table="";
+let table=""
 
 results.reverse().forEach(v=>{
-
 table += `
 <tr>
 <td>${v.token}</td>
 <td>${v.score}</td>
 <td>${v.status}</td>
 </tr>
-`;
+`
+})
 
-});
-
-document.getElementById("tableBody").innerHTML = table;
+document.getElementById("tableBody").innerHTML = table
 
 </script>
 
