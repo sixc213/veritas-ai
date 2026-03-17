@@ -55,24 +55,11 @@ color:white;
 
 <script>
 
-const SUPABASE_URL = "https://zljzzlvzuktqzjcqenhw.supabase.co"
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpsanp6bHZ6dWt0cXpqY3Flbmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzc2ODIsImV4cCI6MjA4ODA1MzY4Mn0.S7L2XCOTetZA37GI1WckjpW7u23W6hcAHjLhSv8ThXM"
+let results = JSON.parse(localStorage.getItem("veritas_results")) || [];
 
-const supabase = window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-)
+let table="";
 
-async function loadData(){
-
-let { data } = await supabase
-.from("verifications")
-.select("*")
-.order("id",{ascending:false})
-
-let table=""
-
-data.forEach(v=>{
+results.reverse().forEach(v=>{
 
 table += `
 <tr>
@@ -80,15 +67,11 @@ table += `
 <td>${v.score}</td>
 <td>${v.status}</td>
 </tr>
-`
+`;
 
-})
+});
 
-document.getElementById("tableBody").innerHTML = table
-
-}
-
-loadData()
+document.getElementById("tableBody").innerHTML = table;
 
 </script>
 
