@@ -109,32 +109,49 @@ return "VER-"+score+"-"+Math.random().toString(36).substring(2,8).toUpperCase()
 }
 
 function startSession(){
-round=0
-totalScore=0
-document.getElementById("resultArea").style.display="none"
-nextRound()
-}
 
+round = 0
+totalScore = 0
+
+// clear previous UI completely
+document.getElementById("testArea").innerHTML = ""
+document.getElementById("resultArea").style.display = "none"
+
+// small delay makes it smoother
+setTimeout(()=>{
+nextRound()
+}, 300)
+
+}
+  
 function nextRound(){
 
-if(round>=3){
+if(round >= 3){
 finishVerification()
 return
 }
 
 round++
 
-let item=questions[Math.floor(Math.random()*questions.length)]
+let item = questions[Math.floor(Math.random()*questions.length)]
 
-correctAnswer=item.a
+correctAnswer = item.a
 
-document.getElementById("testArea").innerHTML=
-"<h3>Round "+round+" of 3</h3>"+
-"<p>"+item.q+"</p>"+
-"<input id='answer'><br><br>"+
-"<button onclick='checkAnswer()'>Submit</button>"
+document.getElementById("testArea").innerHTML = `
+<h3>Round ${round} of 3</h3>
+<p>${item.q}</p>
+<input id="answer" placeholder="Type answer here">
+<br><br>
+<button onclick="checkAnswer()">Submit</button>
+`
 
-startTime=Date.now()
+// focus input automatically
+setTimeout(()=>{
+document.getElementById("answer").focus()
+},100)
+
+startTime = Date.now()
+
 }
 
 function checkAnswer(){
