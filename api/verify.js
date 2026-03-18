@@ -1,17 +1,21 @@
 export default function handler(req, res) {
 
-  const { score } = req.body;
-
-  let status = "Bot";
-
-  if(score > 60){
-    status = "Verified Human";
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
+  const score = req.body.score || 0;
+
+  let status = score >= 70
+    ? "Verified Human"
+    : "Verification Failed";
+
+  const token = "VER-" + score + "-" + Math.random().toString(36).substring(2,8).toUpperCase();
+
   res.status(200).json({
-    score: score,
-    status: status,
-    token: "VER-" + score + "-" + Math.random().toString(36).substring(7)
+    status,
+    score,
+    token
   });
 
 }
