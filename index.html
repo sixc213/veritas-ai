@@ -186,33 +186,38 @@ let avg = Math.round(totalScore/3)
 document.getElementById("testArea").innerHTML = ""
 document.getElementById("resultArea").style.display = "block"
 
-// 🔥 SEND TO API
-fetch("https://veritas-ai-gamma.vercel.app/api/verify", {
+// TRY API FIRST
+fetch("https://veritas-ai-gamma.vercel.app//api/verify", {
   method:"POST",
   headers:{
     "Content-Type":"application/json"
   },
-  body:JSON.stringify({
-    score: avg
-  })
+  body:JSON.stringify({ score: avg })
 })
 .then(res=>res.json())
 .then(data=>{
 
-  // Save locally too
   saveVerification(data.token, data.score, data.status)
 
   document.getElementById("scoreBar").style.width = data.score + "%"
-
   document.getElementById("scoreText").innerText = "Score: " + data.score + "%"
-
   document.getElementById("statusText").innerText = "Status: " + data.status
-
   document.getElementById("tokenText").innerText = "Token: " + data.token
 
 })
-.catch(err=>{
-  console.error("API Error:", err)
+.catch(()=>{
+
+  // 🔁 FALLBACK (VERY IMPORTANT)
+  let status = avg >= 70 ? "Verified Human" : "Bot"
+  let token = generateToken(avg)
+
+  saveVerification(token, avg, status)
+
+  document.getElementById("scoreBar").style.width = avg + "%"
+  document.getElementById("scoreText").innerText = "Score: " + avg + "%"
+  document.getElementById("statusText").innerText = "Status: " + status
+  document.getElementById("tokenText").innerText = "Token: " + token
+
 })
 
 }
