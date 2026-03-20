@@ -197,12 +197,22 @@ fetch("https://veritas-egz60rz4j-sixc213s-projects.vercel.app/api/verify", {
 .then(res=>res.json())
 .then(data=>{
 
-  saveVerification(data.token, data.score, data.status)
+  // ✅ SAVE FIRST (force it)
+  let results = JSON.parse(localStorage.getItem("veritas_results")) || [];
 
-  document.getElementById("scoreBar").style.width = data.score + "%"
-  document.getElementById("scoreText").innerText = "Score: " + data.score + "%"
-  document.getElementById("statusText").innerText = "Status: " + data.status
-  document.getElementById("tokenText").innerText = "Token: " + data.token
+  results.push({
+    token: data.token,
+    score: data.score,
+    status: data.status
+  });
+
+  localStorage.setItem("veritas_results", JSON.stringify(results));
+
+  // ✅ THEN display
+  document.getElementById("scoreBar").style.width = data.score + "%";
+  document.getElementById("scoreText").innerText = "Score: " + data.score + "%";
+  document.getElementById("statusText").innerText = "Status: " + data.status;
+  document.getElementById("tokenText").innerText = "Token: " + data.token;
 
 })
 .catch(()=>{
