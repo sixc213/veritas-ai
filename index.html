@@ -190,7 +190,8 @@ document.getElementById("resultArea").style.display = "block"
 fetch("https://veritas-egz60rz4j-sixc213s-projects.vercel.app/api/verify", {
   method:"POST",
   headers:{
-    "Content-Type":"application/json"
+    "Content-Type":"application/json",
+    "x-api-key": "veritas_free_123"
   },
   body:JSON.stringify({ score: avg })
 })
