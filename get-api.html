@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Get API Key - VERITAS AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+text-align:center;
+padding:40px;
+}
+
+input{
+padding:10px;
+width:80%;
+margin-top:10px;
+}
+
+button{
+padding:12px 20px;
+margin-top:20px;
+background:#2563eb;
+border:none;
+color:white;
+border-radius:8px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Get Your VERITAS API Key</h1>
+
+<p>Enter your email to generate your API key</p>
+
+<input id="email" placeholder="Enter your email">
+
+<br>
+
+<button onclick="generateKey()">Generate API Key</button>
+
+<p id="result"></p>
+
+<script>
+
+function generateKey(){
+
+let email = document.getElementById("email").value.trim()
+
+if(!email){
+alert("Enter email")
+return
+}
+
+// simple key generator
+let key = "veritas_" + Math.random().toString(36).substring(2,10)
+
+// save locally
+let keys = JSON.parse(localStorage.getItem("veritas_keys")) || []
+
+keys.push({email, key})
+
+localStorage.setItem("veritas_keys", JSON.stringify(keys))
+
+document.getElementById("result").innerHTML =
+"Your API Key:<br><b>"+key+"</b><br><br>Copy and use it!"
+
+}
+
+</script>
+
+</body>
+</html>
