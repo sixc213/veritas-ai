@@ -51,21 +51,31 @@ color:white;
 
 <script>
 
-let results = JSON.parse(localStorage.getItem("veritas_results")) || []
+function loadDashboard(){
 
-let table=""
+let results = JSON.parse(localStorage.getItem("veritas_results")) || [];
 
-results.reverse().forEach(v=>{
-table += `
-<tr>
-<td>${v.token}</td>
-<td>${v.score}</td>
-<td>${v.status}</td>
-</tr>
-`
-})
+let table = "";
 
-document.getElementById("tableBody").innerHTML = table
+results.slice().reverse().forEach(v=>{
+  table += `
+  <tr>
+    <td>${v.token}</td>
+    <td>${v.score}</td>
+    <td>${v.status}</td>
+  </tr>
+  `;
+});
+
+document.getElementById("tableBody").innerHTML = table;
+
+}
+
+// run on load
+loadDashboard();
+
+// 🔥 auto refresh every 2 seconds
+setInterval(loadDashboard, 2000);
 
 </script>
 
