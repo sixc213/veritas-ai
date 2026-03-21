@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Upgrade - VERITAS AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+text-align:center;
+padding:40px;
+}
+
+button{
+padding:12px 20px;
+margin-top:20px;
+background:#22c55e;
+border:none;
+color:white;
+border-radius:8px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Upgrade to Pro 🚀</h1>
+
+<p>Get higher limits and full access</p>
+
+<h2>$10 / month</h2>
+
+<button onclick="upgrade()">Upgrade Now</button>
+
+<p id="result"></p>
+
+<script>
+
+function upgrade(){
+
+// generate pro key
+let key = "veritas_pro_" + Math.random().toString(36).substring(2,8)
+
+// save locally
+let keys = JSON.parse(localStorage.getItem("veritas_keys")) || []
+
+keys.push({plan:"pro", key})
+
+localStorage.setItem("veritas_keys", JSON.stringify(keys))
+
+document.getElementById("result").innerHTML =
+"🎉 Payment Successful (Demo)<br><br>Your PRO Key:<br><b>"+key+"</b>"
+
+}
+
+</script>
+
+</body>
+</html>
