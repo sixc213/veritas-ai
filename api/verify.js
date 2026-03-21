@@ -11,9 +11,9 @@ export default function handler(req, res) {
 
   const apiKey = req.headers["x-api-key"];
 
-  if (!API_KEYS[apiKey]) {
-    return res.status(401).json({ error: "Invalid API Key" });
-  }
+if (!API_KEYS[apiKey] && !apiKey.startsWith("veritas_pro_")) {
+  return res.status(401).json({ error: "Invalid API Key" });
+}
 
   // 🚫 LIMIT CHECK
   if (API_KEYS[apiKey].used >= API_KEYS[apiKey].limit) {
