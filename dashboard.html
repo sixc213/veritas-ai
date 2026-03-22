@@ -55,7 +55,7 @@ function loadDashboard(){
 
 let results = JSON.parse(localStorage.getItem("veritas_results")) || [];
 
-let table = "";
+let table = "document.getElementById("dataTable")";
 
 results.slice().reverse().forEach(v=>{
   table += `
