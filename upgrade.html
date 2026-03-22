@@ -37,22 +37,60 @@ cursor:pointer;
 
 <p id="result"></p>
 
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+
 <script>
 
-function upgrade(){
+function makePayment(){
 
-// generate pro key
-let key = "veritas_pro_" + Math.random().toString(36).substring(2,8)
+let email = document.getElementById("email").value.trim()
 
-// save locally
-let keys = JSON.parse(localStorage.getItem("veritas_keys")) || []
+if(!email){
+alert("Enter email")
+return
+}
 
-keys.push({plan:"pro", key})
+FlutterwaveCheckout({
+  public_key: "FLWPUBK_TEST-60fce4e27377013f8cc489a036d55f2f-X",
+  tx_ref: "veritas_" + Date.now(),
+  amount: 10,
+  currency: "USD",
+  payment_options: "card",
 
-localStorage.setItem("veritas_keys", JSON.stringify(keys))
+  customer: {
+    email: email,
+  },
 
-document.getElementById("result").innerHTML =
-"🎉 Payment Successful (Demo)<br><br>Your PRO Key:<br><b>"+key+"</b>"
+  callback: function (response) {
+
+    if(response.status === "successful"){
+
+      // 🔥 AUTO GENERATE KEY
+      let key = "veritas_pro_" + Math.random().toString(36).substring(2,10)
+
+      let keys = JSON.parse(localStorage.getItem("veritas_keys")) || []
+
+      keys.push({email, plan:"pro", key})
+
+      localStorage.setItem("veritas_keys", JSON.stringify(keys))
+
+      document.getElementById("result").innerHTML =
+      "✅ Payment Successful<br><br>Your API Key:<br><b>"+key+"</b>"
+
+    }
+
+  },
+
+  onclose: function() {
+    console.log("Payment closed");
+  },
+
+  customizations: {
+    title: "VERITAS AI",
+    description: "Pro API Access",
+  }
+
+});
 
 }
 
