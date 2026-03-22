@@ -76,7 +76,10 @@ FlutterwaveCheckout({
 
       document.getElementById("result").innerHTML =
       "✅ Payment Successful<br><br>Your API Key:<br><b>"+key+"</b>"
-
+      
+ setTimeout(()=>{
+  window.location.href = "dashboard.html"
+}, 3000)
     }
 
   },
