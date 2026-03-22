@@ -78,6 +78,29 @@ loadDashboard();
 setInterval(loadDashboard, 2000);
 
 </script>
+<script>
 
+fetch("https://your-vercel-site.vercel.app/api/dashboard")
+.then(res => res.json())
+.then(data => {
+
+let html = "<h2>Users</h2>";
+
+data.forEach(user => {
+  html += `
+  <div style="background:#eee;padding:10px;margin:10px;">
+    <p>Email: ${user.email}</p>
+    <p>API Key: ${user.key}</p>
+    <p>Usage: ${user.usage}</p>
+  </div>
+  `;
+});
+
+document.body.innerHTML += html;
+
+});
+
+</script>
+  
 </body>
 </html>
