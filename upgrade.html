@@ -66,16 +66,22 @@ FlutterwaveCheckout({
     if(response.status === "successful"){
 
       // 🔥 AUTO GENERATE KEY
-      let key = "veritas_pro_" + Math.random().toString(36).substring(2,10)
+  fetch("https://veritas-egz60rz4j-sixc213s-projects.vercel.app/api/verify create-key", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ email: email })
+})
+.then(res => res.json())
+.then(data => {
 
-      let keys = JSON.parse(localStorage.getItem("veritas_keys")) || []
+  let key = data.apiKey;
 
-      keys.push({email, plan:"pro", key})
+  document.getElementById("result").innerHTML =
+  "✅ Payment Successful<br><br>Your API Key:<br><b>"+key+"</b>"
 
-      localStorage.setItem("veritas_keys", JSON.stringify(keys))
-
-      document.getElementById("result").innerHTML =
-      "✅ Payment Successful<br><br>Your API Key:<br><b>"+key+"</b>"
+});
       
  setTimeout(()=>{
   window.location.href = "dashboard.html"
