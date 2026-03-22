@@ -1,4 +1,5 @@
-let USERS = [];
+global.USERS = global.USERS || [];
+let USERS = global.USERS;
 
 export default function handler(req, res){
 
