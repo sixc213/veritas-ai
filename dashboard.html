@@ -51,31 +51,35 @@ color:white;
 
 <script>
 
-function loadDashboard(){
+function loadData(){
 
-let results = JSON.parse(localStorage.getItem("veritas_results")) || [];
+  let data = JSON.parse(localStorage.getItem("veritas_results")) || []
 
-let table = "document.getElementById("dataTable")";
+  let table = document.getElementById("dataTable")
 
-results.slice().reverse().forEach(v=>{
-  table += `
+  table.innerHTML = `
   <tr>
-    <td>${v.token}</td>
-    <td>${v.score}</td>
-    <td>${v.status}</td>
+    <th>Token</th>
+    <th>Score</th>
+    <th>Status</th>
   </tr>
-  `;
-});
+  `
 
-document.getElementById("tableBody").innerHTML = table;
-
+  data.slice().reverse().forEach(item => {
+    table.innerHTML += `
+      <tr>
+        <td>${item.token}</td>
+        <td>${item.score}</td>
+        <td>${item.status}</td>
+      </tr>
+    `
+  })
 }
 
-// run on load
-loadDashboard();
+// run every 2 seconds
+setInterval(loadData, 2000)
 
-// 🔥 auto refresh every 2 seconds
-setInterval(loadDashboard, 2000);
+loadData()
 
 </script>
 <script>
