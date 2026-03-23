@@ -82,27 +82,58 @@ setInterval(loadData, 2000)
 loadData()
 
 </script>
+<h1 style="text-align:center;">VERITAS AI Dashboard</h1>
+
+<table border="1" id="dataTable" style="width:100%; text-align:center;">
+<tr>
+<th>Token</th>
+<th>Score</th>
+<th>Status</th>
+</tr>
+</table>
+
 <script>
 
-fetch("https://your-vercel-site.vercel.app/api/dashboard")
-.then(res => res.json())
-.then(data => {
+function loadData(){
 
-let html = "<h2>Users</h2>";
+  let data = JSON.parse(localStorage.getItem("veritas_results")) || []
 
-data.forEach(user => {
-  html += `
-  <div style="background:#eee;padding:10px;margin:10px;">
-    <p>Email: ${user.email}</p>
-    <p>API Key: ${user.key}</p>
-    <p>Usage: ${user.usage}</p>
-  </div>
-  `;
-});
+  let table = document.getElementById("dataTable")
 
-document.body.innerHTML += html;
+  // reset table properly
+  table.innerHTML = `
+    <tr>
+      <th>Token</th>
+      <th>Score</th>
+      <th>Status</th>
+    </tr>
+  `
 
-});
+  if(data.length === 0){
+    table.innerHTML += `
+      <tr>
+        <td colspan="3">No data yet</td>
+      </tr>
+    `
+    return
+  }
+
+  data.slice().reverse().forEach(item => {
+    table.innerHTML += `
+      <tr>
+        <td>${item.token}</td>
+        <td>${item.score}</td>
+        <td>${item.status}</td>
+      </tr>
+    `
+  })
+}
+
+// VERY IMPORTANT → wait for page to load
+window.onload = () => {
+  loadData()
+  setInterval(loadData, 2000)
+}
 
 </script>
   
