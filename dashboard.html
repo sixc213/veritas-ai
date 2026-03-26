@@ -6,28 +6,28 @@
 
 <style>
 body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-text-align:center;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+  text-align:center;
 }
 
 table{
-width:90%;
-margin:auto;
-border-collapse:collapse;
-background:white;
-color:black;
+  width:95%;
+  margin:auto;
+  border-collapse:collapse;
+  background:white;
+  color:black;
 }
 
 th,td{
-padding:12px;
-border:1px solid #ddd;
+  padding:12px;
+  border:1px solid #ddd;
 }
 
 th{
-background:#2563eb;
-color:white;
+  background:#2563eb;
+  color:white;
 }
 </style>
 </head>
@@ -36,71 +36,21 @@ color:white;
 
 <h1>VERITAS AI Dashboard</h1>
 
-<table>
-<thead>
-<tr>
-<th>Token</th>
-<th>Score</th>
-<th>Status</th>
-</tr>
-</thead>
-
-<tbody id="tableBody"></tbody>
-
-</table>
-
-<script>
-
-function loadData(){
-
-  let data = JSON.parse(localStorage.getItem("veritas_results")) || []
-
-  let table = document.getElementById("dataTable")
-
-  table.innerHTML = `
+<table id="dataTable">
   <tr>
     <th>Token</th>
     <th>Score</th>
     <th>Status</th>
   </tr>
-  `
-
-  data.slice().reverse().forEach(item => {
-    table.innerHTML += `
-      <tr>
-        <td>${item.token}</td>
-        <td>${item.score}</td>
-        <td>${item.status}</td>
-      </tr>
-    `
-  })
-}
-
-// run every 2 seconds
-setInterval(loadData, 2000)
-
-loadData()
-
-</script>
-<h1 style="text-align:center;">VERITAS AI Dashboard</h1>
-
-<table border="1" id="dataTable" style="width:100%; text-align:center;">
-<tr>
-<th>Token</th>
-<th>Score</th>
-<th>Status</th>
-</tr>
 </table>
 
 <script>
-
 function loadData(){
 
   let data = JSON.parse(localStorage.getItem("veritas_results")) || []
 
   let table = document.getElementById("dataTable")
 
-  // reset table properly
   table.innerHTML = `
     <tr>
       <th>Token</th>
@@ -112,7 +62,7 @@ function loadData(){
   if(data.length === 0){
     table.innerHTML += `
       <tr>
-        <td colspan="3">No data yet</td>
+        <td colspan="3">No verification results yet</td>
       </tr>
     `
     return
@@ -122,20 +72,18 @@ function loadData(){
     table.innerHTML += `
       <tr>
         <td>${item.token}</td>
-        <td>${item.score}</td>
+        <td>${item.score}%</td>
         <td>${item.status}</td>
       </tr>
     `
   })
 }
 
-// VERY IMPORTANT → wait for page to load
 window.onload = () => {
   loadData()
   setInterval(loadData, 2000)
 }
-
 </script>
-  
+
 </body>
 </html>
