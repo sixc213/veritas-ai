@@ -223,17 +223,31 @@ fetch("https://veritas-egz60rz4j-sixc213s-projects.vercel.app/api/verify", {
 .catch(()=>{
 
   // 🔁 FALLBACK (VERY IMPORTANT)
-  let status = avg >= 70 ? "Verified Human" : "Bot"
-  let token = generateToken(avg)
+  function finishVerification(){
 
-  saveVerification(token, avg, status)
+let avg=Math.round(totalScore/3)
+let status=avg>=70?"Verified Human":"Bot"
+let token=generateToken(avg)
 
-  document.getElementById("scoreBar").style.width = avg + "%"
-  document.getElementById("scoreText").innerText = "Score: " + avg + "%"
-  document.getElementById("statusText").innerText = "Status: " + status
-  document.getElementById("tokenText").innerText = "Token: " + token
+saveVerification(token, avg, status)
 
-})
+document.getElementById("testArea").innerHTML=""
+document.getElementById("resultArea").style.display="block"
+
+document.getElementById("scoreBar").style.width=avg+"%"
+document.getElementById("scoreText").innerText="Score: "+avg+"%"
+document.getElementById("statusText").innerText="Status: "+status
+document.getElementById("tokenText").innerText="Token: "+token
+
+// 🔥 SEND RESULT BACK TO COMPANY SITE
+window.opener.postMessage({
+  type: "VERITAS_RESULT",
+  payload: {
+    score: avg,
+    status: status,
+    token: token
+  }
+}, "*");
 
 }
   
