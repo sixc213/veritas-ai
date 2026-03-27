@@ -1,18 +1,27 @@
-function startVeritas() {
-  let popup = window.open(
-    "verify.html",
-    "VERITAS",
-    "width=500,height=700"
-  );
+(function () {
 
-  window.addEventListener("message", function (event) {
-    if (event.data.type === "VERITAS_RESULT") {
-      console.log("Verification Result:", event.data);
+  function openVeritas() {
 
-      // send result to company website
-      if (typeof window.onVeritasVerified === "function") {
-        window.onVeritasVerified(event.data);
+    let popup = window.open(
+      "https://sixc213.github.io/veritas-ai/index.html",
+      "VERITAS Verification",
+      "width=500,height=700"
+    );
+
+    window.addEventListener("message", function (event) {
+      if (event.data.type === "VERITAS_RESULT") {
+
+        // Send result back to the company site
+        if (window.VeritasCallback) {
+          window.VeritasCallback(event.data.payload);
+        }
+
       }
-    }
-  });
-}
+    });
+
+  }
+
+  // Expose to global
+  window.VeritasStart = openVeritas;
+
+})();
