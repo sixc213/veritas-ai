@@ -1,0 +1,4 @@
+const VERITAS_KEYS = [
+  "VERITAS-12345-PRO",
+  "VERITAS-67890-PRO"
+];
