@@ -1,6 +1,22 @@
 (function () {
 
+  function getKeyFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("key");
+  }
+
+  function isValidKey(key) {
+    return VERITAS_KEYS.includes(key);
+  }
+
   function openVeritas() {
+
+    const key = getKeyFromURL();
+
+    if (!isValidKey(key)) {
+      alert("Invalid VERITAS API Key");
+      return;
+    }
 
     let popup = window.open(
       "https://sixc213.github.io/veritas-ai/index.html",
@@ -11,7 +27,6 @@
     window.addEventListener("message", function (event) {
       if (event.data.type === "VERITAS_RESULT") {
 
-        // Send result back to the company site
         if (window.VeritasCallback) {
           window.VeritasCallback(event.data.payload);
         }
@@ -21,7 +36,6 @@
 
   }
 
-  // Expose to global
   window.VeritasStart = openVeritas;
 
 })();
