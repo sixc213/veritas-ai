@@ -1,15 +1,29 @@
+// /api/create-key.js
+
+const keys = [];
+
+function generateKey() {
+  return "VERITAS-" + Math.random().toString(36).substring(2,10).toUpperCase();
+}
+
 export default function handler(req, res) {
-
-  const VALID_KEYS = [
-    "VERITAS-12345-PRO",
-    "VERITAS-67890-PRO"
-  ];
-
-  const key = req.headers["x-api-key"];
-
-  if (VALID_KEYS.includes(key)) {
-    return res.status(200).json({ valid: true });
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
   }
 
-  return res.status(403).json({ valid: false });
+  const { email } = req.body;
+
+  const newKey = generateKey();
+
+  keys.push({
+    email,
+    key: newKey,
+    plan: "PRO",
+    createdAt: Date.now()
+  });
+
+  res.status(200).json({
+    success: true,
+    key: newKey
+  });
 }
