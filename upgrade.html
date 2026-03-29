@@ -66,7 +66,7 @@ FlutterwaveCheckout({
     if(response.status === "successful"){
 
       // 🔥 AUTO GENERATE KEY
-  fetch("https://veritas-egz60rz4j-sixc213s-projects.vercel.app/api/verify create-key", {
+fetch("https://veritas-egz60rz4j-sixc213s-projects.vercel.app/api/create-key", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
@@ -76,19 +76,18 @@ FlutterwaveCheckout({
 .then(res => res.json())
 .then(data => {
 
-  let key = data.apiKey;
+  let key = data.key;
 
   document.getElementById("result").innerHTML =
-  "✅ Payment Successful<br><br>Your API Key:<br><b>"+key+"</b>"
+  "✅ Payment Successful<br><br>Your API Key:<br><b>"+ key +"</b>";
+
+  setTimeout(()=>{
+    window.location.href = "dashboard.html";
+  }, 3000);
 
 });
-      
- setTimeout(()=>{
-  window.location.href = "dashboard.html"
-}, 3000)
-    }
 
-  },
+  }
 
   onclose: function() {
     console.log("Payment closed");
