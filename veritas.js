@@ -5,16 +5,25 @@
     return params.get("key");
   }
 
-  function isValidKey(key) {
-    return VERITAS_KEYS.includes(key);
+  async function isValidKey(key) {
+    const res = await fetch(
+      "https://veritas-egz60rz4j-sixc213s-projects.vercel.app/api/verify/check-key",
+      {
+        headers: { "x-api-key": key }
+      }
+    );
+    const data = await res.json();
+    return data.valid;
   }
 
-  function openVeritas() {
+  async function openVeritas() {
 
     const key = getKeyFromURL();
 
-    if (!isValidKey(key)) {
-      alert("Invalid VERITAS API Key");
+    const valid = await isValidKey(key);
+
+    if (!valid) {
+      alert("Invalid or unpaid VERITAS API Key");
       return;
     }
 
@@ -26,14 +35,11 @@
 
     window.addEventListener("message", function (event) {
       if (event.data.type === "VERITAS_RESULT") {
-
         if (window.VeritasCallback) {
           window.VeritasCallback(event.data.payload);
         }
-
       }
     });
-
   }
 
   window.VeritasStart = openVeritas;
