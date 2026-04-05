@@ -40,70 +40,69 @@ cursor:pointer;
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 
 <script>
-
 function makePayment(){
 
-let email = document.getElementById("email").value.trim()
+  let email = document.getElementById("email").value.trim();
 
-if(!email){
-alert("Enter email")
-return
-}
-
-FlutterwaveCheckout({
-  public_key: "FLWPUBK_TEST-3ffeb1fe0abd625ce220be52a8a243cb-X",
-  encryption_key: "FLWSECK_TEST36dc175e586f",
-  tx_ref: "veritas_" + Date.now(),
-  amount: 10,
-  currency: "USD",
-  payment_options: "card",
-
-  customer: {
-    email: email,
-  },
-
-  callback: function (response) {
-
-    if(response.status === "successful"){
-
-      // 🔥 AUTO GENERATE KEY
-fetch("https://veritas-egz60rz4j-sixc213s-projects.vercel.app/api/create-key", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({ email: email })
-})
-.then(res => res.json())
-.then(data => {
-
-  let key = data.key;
-
-  document.getElementById("result").innerHTML =
-  "✅ Payment Successful<br><br>Your API Key:<br><b>"+ key +"</b>";
-
-  setTimeout(()=>{
-    window.location.href = "dashboard.html";
-  }, 3000);
-
-});
-
+  if(!email){
+    alert("Enter email");
+    return;
   }
 
-  onclose: function() {
-    console.log("Payment closed");
-  },
+  FlutterwaveCheckout({
+    public_key: "FLWPUBK_TEST-3ffeb1fe0abd625ce220be52a8a243cb-X",
+    encryption_key: "FLWSECK_TEST36dc175e586f",
+    tx_ref: "veritas_" + Date.now(),
+    amount: 10,
+    currency: "USD",
+    payment_options: "card",
 
-  customizations: {
-    title: "VERITAS AI",
-    description: "Pro API Access",
-  }
+    customer: {
+      email: email,
+    },
 
-});
+    customizations: {
+      title: "VERITAS AI",
+      description: "Pro API Access",
+    },
+
+    callback: function (response) {
+
+      if(response.status === "successful"){
+
+        fetch("https://veritas-egz60rz4j-sixc213s-projects.vercel.app/api/create-key", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email: email })
+        })
+        .then(res => res.json())
+        .then(data => {
+
+          let key = data.key;
+
+          document.getElementById("result").innerHTML =
+          "✅ Payment Successful<br><br>Your API Key:<br><b>"+ key +"</b>";
+
+          setTimeout(()=>{
+            window.location.href = "dashboard.html";
+          }, 3000);
+
+        });
+
+      }
+    },
+
+    onclose: function() {
+      console.log("Payment closed");
+    }
+
+  });
 
 }
-
 </script>
+
 
 </body>
 </html>
