@@ -6,18 +6,43 @@
 
 <style>
 body{
-  font-family:Arial;
+  font-family:Arial, Helvetica, sans-serif;
   background:#0f172a;
   color:white;
   text-align:center;
+  margin:0;
+  padding:0;
+}
+
+header{
+  background:#111827;
+  padding:20px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.4);
+}
+
+h1{
+  margin:0;
+  color:#60a5fa;
+}
+
+#userInfo{
+  margin:20px auto;
+  width:95%;
+  background:#1e293b;
+  padding:15px;
+  border-radius:8px;
+  font-size:14px;
+  line-height:1.8;
 }
 
 table{
   width:95%;
-  margin:auto;
+  margin:20px auto;
   border-collapse:collapse;
   background:white;
   color:black;
+  border-radius:8px;
+  overflow:hidden;
 }
 
 th,td{
@@ -29,12 +54,31 @@ th{
   background:#2563eb;
   color:white;
 }
+
+textarea{
+  width:95%;
+  height:80px;
+  margin:15px auto;
+  display:block;
+  border-radius:6px;
+  padding:10px;
+  font-size:13px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>VERITAS AI Dashboard</h1>
+<header>
+  <h1>VERITAS AI Dashboard</h1>
+</header>
+
+<div id="userInfo">
+  Loading user info...
+</div>
+
+<h3>Install VERITAS on your website</h3>
+<textarea id="scriptBox" readonly></textarea>
 
 <table id="dataTable">
   <tr>
@@ -45,6 +89,27 @@ th{
 </table>
 
 <script>
+// ===== USER INFO & SCRIPT GENERATOR =====
+function loadUser(){
+  const params = new URLSearchParams(window.location.search);
+  const key = params.get('key');
+
+  if(!key){
+    document.getElementById('userInfo').innerHTML = "No API key detected in URL.";
+    return;
+  }
+
+  document.getElementById('userInfo').innerHTML = `
+    <b>Your API Key:</b> ${key}<br>
+    <b>Status:</b> Active<br>
+    <b>Dashboard updates live as VERITAS blocks threats.</b>
+  `;
+
+  const script = `<script src="https://sixc213.github.io/veritas-ai/veritas.js?key=${key}"><\/script>`;
+  document.getElementById('scriptBox').value = script;
+}
+
+// ===== VERIFICATION TABLE (YOUR ORIGINAL CODE) =====
 function loadData(){
 
   let data = JSON.parse(localStorage.getItem("veritas_results")) || []
@@ -80,8 +145,9 @@ function loadData(){
 }
 
 window.onload = () => {
-  loadData()
-  setInterval(loadData, 2000)
+  loadUser();
+  loadData();
+  setInterval(loadData, 2000);
 }
 </script>
 
