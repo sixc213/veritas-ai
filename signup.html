@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Get Your Free Veritas Key</title>
+  <script src="keys.js"></script>
+</head>
+<body style="font-family: Arial; text-align:center; padding-top:80px">
+
+  <h1>Get Your Free Veritas AI Key</h1>
+  <p>Install in 30 seconds. No DM. No waiting.</p>
+
+  <input id="email" placeholder="Your Email" style="padding:10px; width:250px"><br><br>
+  <input id="website" placeholder="Your Website URL" style="padding:10px; width:250px"><br><br>
+
+  <button onclick="createKey()" style="padding:12px 30px">Get Free Key</button>
+
+  <script>
+    function createKey() {
+      const email = document.getElementById('email').value;
+      const website = document.getElementById('website').value;
+
+      if(!email || !website){
+        alert("Fill all fields");
+        return;
+      }
+
+      const key = generateKey();
+      saveUser(email, website, key);
+
+      window.location.href = "dashboard.html?key=" + key;
+    }
+  </script>
+
+</body>
+</html>
